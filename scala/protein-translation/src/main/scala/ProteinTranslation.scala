@@ -25,5 +25,5 @@ object ProteinTranslation {
       .grouped(3)
       .map(rnaToProtein)
       .takeWhile(_ != "STOP")
-      .toList
+      .toSeq
 }

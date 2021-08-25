@@ -8,9 +8,10 @@ logs/
 .bloop
 .dotty-ide-artifact
 .dotty-ide.json
-.idea
-.metals
-.vscode
+.exercism/
+.idea/
+.metals/
+.vscode/
 *.csv
 *.dat
 metals.sbt
