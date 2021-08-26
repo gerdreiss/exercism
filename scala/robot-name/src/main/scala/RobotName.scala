@@ -18,7 +18,7 @@ object RobotNames {
   private val cache     = mutable.ListBuffer.empty[String]
 
   @tailrec
-  def generate(letters: Int = 2, digits: Int = 3): String   =
+  def generate(letters: Int = 2, digits: Int = 3): String =
     randomName(letters, digits) match {
       case nameRegex(s) if !cache.contains(s) => cache.append(s); s
       case _                                  => generate(letters, digits)
