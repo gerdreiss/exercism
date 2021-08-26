@@ -23,6 +23,7 @@ object RobotNames {
       case nameRegex(s) if !cache.contains(s) => cache.append(s); s
       case _                                  => generate(letters, digits)
     }
+
   private def randomName(letters: Int = 2, digits: Int = 3) =
     (0 until letters).map(_ => Random.nextPrintableChar.toUpper).mkString +
       (0 until digits).map(_ => Random.nextInt(10)).mkString
