@@ -5,7 +5,7 @@ object MatchingBrackets {
   private val pairs = "[]{}()<>"
 
   @tailrec
-  def recurse(input: String): Boolean =
+  private def recurse(input: String): Boolean =
     pairs.sliding(2, 2).foldLeft(input)((remainder, pair) => remainder.replace(pair, "")) match {
       case ""              => true
       case r if r == input => false
