@@ -6,7 +6,7 @@ object MatchingBrackets {
 
   @tailrec
   def recurse(input: String): Boolean =
-    pairs.sliding(2, 2).foldLeft(input)((remainder, br) => remainder.replace(br, "")) match {
+    pairs.sliding(2, 2).foldLeft(input)((remainder, pair) => remainder.replace(pair, "")) match {
       case ""              => true
       case r if r == input => false
       case r               => recurse(r)
