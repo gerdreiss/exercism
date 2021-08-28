@@ -1,13 +1,14 @@
--- This file has been generated from package.yaml by hpack version 0.28.2.
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e4a2c78f3e9239c00a8832a34f4f043da89e096bb2cbcf7063297e4cde083810
+-- hash: 15bb81fa245efc33b3d5d5a3f29179d0b5d2ce6fd3cd20f20004c25ecc6c90d9
 
 name:           rna-transcription
 version:        1.2.0.7
 build-type:     Simple
-cabal-version:  >= 1.10
 
 library
   exposed-modules:

@@ -1,13 +1,14 @@
--- This file has been generated from package.yaml by hpack version 0.28.2.
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 8cee2fe0087d9aa9163cdcec52446389b98bdd493875428a9304eb59ae40f173
+-- hash: d38ca88f597471acabdbf20ef239cba5d26a9a41f75418ae19a28def9a8f4e63
 
 name:           collatz-conjecture
 version:        1.2.0.2
 build-type:     Simple
-cabal-version:  >= 1.10
 
 library
   exposed-modules:

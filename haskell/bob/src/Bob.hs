@@ -1,6 +1,6 @@
-{-# LANGUAGE TemplateHaskell #-}
-
-module Bob (responseFor) where
+module Bob
+  ( responseFor
+  ) where
 
 import           Data.Char
 
@@ -12,27 +12,26 @@ import           Data.Char
 -- He answers 'Whatever.' to anything else.
 
 responseFor :: String -> String
-responseFor xs
-  | yell xs && question xs = "Calm down, I know what I'm doing!"
-  | yell xs = "Whoa, chill out!"
-  | question xs = "Sure."
-  | sayNothing xs = "Fine. Be that way!"
-  | otherwise = "Whatever."
+responseFor xs | yell xs && question xs = "Calm down, I know what I'm doing!"
+               | yell xs                = "Whoa, chill out!"
+               | question xs            = "Sure."
+               | sayNothing xs          = "Fine. Be that way!"
+               | otherwise              = "Whatever."
 
 
 yell :: String -> Bool
 yell [] = False
-yell xs = any isLetter xs && (null $ filter isLower xs)
+yell xs = any isLetter xs && not (any isLower xs)
 
 question :: String -> Bool
 question [] = False
-question xs = length stripped > 0 && last stripped == '?'
+question xs = not (null stripped) && last stripped == '?'
   where stripped = strip xs
 
 strip :: String -> String
-strip []     = []
-strip (x:xs) = if isSpace x then strip xs else x:(strip xs)
+strip []       = []
+strip (x : xs) = if isSpace x then strip xs else x : strip xs
 
 sayNothing :: String -> Bool
 sayNothing [] = True
-sayNothing xs = null $ filter isAlphaNum xs
+sayNothing xs = not (any isAlphaNum xs)
