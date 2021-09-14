@@ -1,14 +1,17 @@
 object SecretHandshake {
+  val actions = Map(
+    0 -> ((acc: List[String]) => acc :+ "wink"),
+    1 -> ((acc: List[String]) => acc :+ "double blink"),
+    2 -> ((acc: List[String]) => acc :+ "close your eyes"),
+    3 -> ((acc: List[String]) => acc :+ "jump"),
+    4 -> ((acc: List[String]) => acc.reverse)
+  )
+
   def commands(input: Int): List[String] =
-    toBase2(input / 2, input % 2)
-      .zipWithIndex
+    toBase2(input / 2, input % 2).zipWithIndex
       .foldLeft(List.empty[String]) { case (acc, (c, i)) =>
         (c, i) match {
-          case ('1', 0) => acc :+ "wink"
-          case ('1', 1) => acc :+ "double blink"
-          case ('1', 2) => acc :+ "close your eyes"
-          case ('1', 3) => acc :+ "jump"
-          case ('1', 4) => acc.reverse
+          case ('1', i) => actions.get(i).map(_.apply(acc)).getOrElse(acc)
           case _        => acc
         }
       }
