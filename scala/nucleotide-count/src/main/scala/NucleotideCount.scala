@@ -1,8 +1,9 @@
 class DNA(private val v: String) {
 
-  val emptyResult: Either[String, Map[Char, Int]] = Right("ACGT".map(ch => ch -> 0).toMap)
+  val emptyResult: Either[String, Map[Char, Int]] = Right("ACGT".map(_ -> 0).toMap)
 
-  def nucleotideCounts: Either[String, Map[Char, Int]] =
+  /** my original solution */
+  val nucleotideCounts: Either[String, Map[Char, Int]] =
     v.foldLeft(emptyResult) {
       case (Right(acc), ch) =>
         acc
@@ -11,4 +12,7 @@ class DNA(private val v: String) {
           .map(count => acc.updated(ch, count + 1))
       case (left, _)        => left
     }
+
+  /** much more elegant solution */
+  //lazy val nucleotideCounts = "ACGT".map(_ -> 0).toMap ++ v.groupBy(identity).mapValues(_.length)
 }
