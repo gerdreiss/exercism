@@ -1,10 +1,10 @@
-class DNA(private val v: String) {
+class DNA(private val dna: String) {
 
-  val emptyResult: Either[String, Map[Char, Int]] = Right("ACGT".map(_ -> 0).toMap)
+  /** my first solution */
+  private val emptyResult: Either[String, Map[Char, Int]] = Right("ACGT".map(_ -> 0).toMap)
 
-  /** my original solution */
-  val nucleotideCounts: Either[String, Map[Char, Int]] =
-    v.foldLeft(emptyResult) {
+  lazy val nucleotideCounts0: Either[String, Map[Char, Int]] =
+    dna.foldLeft(emptyResult) {
       case (Right(acc), ch) =>
         acc
           .get(ch)
@@ -13,6 +13,12 @@ class DNA(private val v: String) {
       case (left, _)        => left
     }
 
-  /** much more elegant solution */
-  //lazy val nucleotideCounts = "ACGT".map(_ -> 0).toMap ++ v.groupBy(identity).mapValues(_.length)
+  /** another way to solve the problem */
+  private val nucleotides = "ACGT"
+
+  lazy val nucleotideCounts: Either[String, Map[Char, Int]] = {
+    val result = dna.groupBy(identity).mapValues(_.length)
+    if (result.keySet.forall(nucleotides.contains(_))) Right(nucleotides.map(_ -> 0).toMap ++ result)
+    else Left("invalid dna string")
+  }
 }
