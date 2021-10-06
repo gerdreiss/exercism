@@ -73,35 +73,32 @@ object Expr {
 }
 
 object ExprLexer extends RegexParsers {
-  val whatIs: Parser[String] = """What is""".r
-
-  val number: Parser[Int] = """([-]?\d+)""".r ^^ { _.toInt }
-
+  val whatIs: Parser[String]       = """What is""".r
+  val number: Parser[Int]          = """([-]?\d+)""".r ^^ { _.toInt }
   val plus: Parser[String]         = """plus""".r
   val minus: Parser[String]        = """minus""".r
   val multipliedBy: Parser[String] = """multiplied by""".r
   val dividedBy: Parser[String]    = """divided by""".r
+  val raisedTo: Parser[String]     = """raised to the""".r
+  val nthPower: Parser[String]     = """(st|nd|rd|th) power""".r
 
-  val raisedTo: Parser[String] = """raised to the""".r
-  val nthPower: Parser[String] = """(st|nd|rd|th) power""".r
-
-  def justNum: ExprLexer.Parser[Option[Expr]] = whatIs ~ number ^^ { case _ ~ n =>
+  val justNum: ExprLexer.Parser[Option[Expr]] = whatIs ~ number ^^ { case _ ~ n =>
     Some(Lit(n))
   }
 
-  def arithmetic: ExprLexer.Parser[Option[Expr]] =
+  val arithmetic: ExprLexer.Parser[Option[Expr]] =
     whatIs ~ number ~ rep((plus | minus | multipliedBy | dividedBy) ~ number) ^^ { case _ ~ n1 ~ ops =>
       ops.foldLeft(Option.apply[Expr](Lit(n1))) { case (Some(expr), op ~ n) =>
         Op.make(op).map(BinaryOp(expr, _, Lit(n)))
       }
     }
 
-  def power: ExprLexer.Parser[Option[Expr]] =
+  val power: ExprLexer.Parser[Option[Expr]] =
     whatIs ~ number ~ raisedTo ~ number ~ nthPower ^^ { case _ ~ n1 ~ r ~ n2 ~ p =>
       Op.make(r + " nth " + p).map(BinaryOp(Lit(n1), _, Lit(n2)))
     }
 
-  def all: ExprLexer.Parser[Option[Expr]] = arithmetic | power | justNum
+  val all: ExprLexer.Parser[Option[Expr]] = arithmetic | power | justNum
 }
 
 object Wordy {
