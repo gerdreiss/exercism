@@ -60,6 +60,10 @@ class WordyTest extends FunSuite with Matchers {
     Wordy.answer("What is -12 divided by 2 divided by -3?") should be(Some(2))
   }
 
+  test("power") {
+    Wordy.answer("What is 5 raised to the 3rd power?") should be(Some(125))
+  }
+
   test("unknown operation") {
     Wordy.answer("What is 52 cubed?") should be(None)
   }

@@ -29,12 +29,12 @@ object OpType {
   }
 
   def make(s: String): Option[OpType] = s match {
-    case "plus"                => Some(Sum)
-    case "minus"               => Some(Diff)
-    case "multiplied by"       => Some(Prod)
-    case "divided by"          => Some(Div)
-    case "raised to nth power" => Some(Pow)
-    case _                     => None
+    case "plus"                    => Some(Sum)
+    case "minus"                   => Some(Diff)
+    case "multiplied by"           => Some(Prod)
+    case "divided by"              => Some(Div)
+    case "raised to the nth power" => Some(Pow)
+    case _                         => None
   }
 }
 
@@ -63,7 +63,7 @@ object ExprLexer extends RegexParsers {
   val multipliedBy: Parser[String] = """multiplied by""".r
   val dividedBy: Parser[String]    = """divided by""".r
   val raisedTo: Parser[String]     = """raised to the""".r
-  val nthPower: Parser[String]     = """(st|nd|rd|th) power""".r
+  val nthPower: Parser[Int]        = """(st|nd|rd|th) power""".r ^^ { _.toInt }
 
   val justNum: ExprLexer.Parser[Option[Expr]] = whatIs ~ number ^^ { case _ ~ n =>
     Some(Lit(n))
@@ -77,8 +77,8 @@ object ExprLexer extends RegexParsers {
     }
 
   val power: ExprLexer.Parser[Option[Expr]] =
-    whatIs ~ number ~ raisedTo ~ number ~ nthPower ^^ { case _ ~ n1 ~ r ~ n2 ~ p =>
-      OpType.make(r + " nth " + p).map(Op(_, Lit(n1), Lit(n2)))
+    whatIs ~ number ~ raisedTo ~ nthPower ^^ { case _ ~ n ~ r ~ p =>
+      OpType.make(r + " nth power").map(Op(_, Lit(n), Lit(p)))
     }
 
   val all: ExprLexer.Parser[Option[Expr]] = arithmetic | power | justNum
