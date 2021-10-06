@@ -1,49 +1,34 @@
-import Expr.{BinaryOp, Lit}
+import Expr.{Lit, Op}
 
 import scala.util.parsing.combinator._
 
-sealed trait Op {
-  def exec(n: Int, ns: Int*): Option[Int]
+sealed trait OpType {
+  def exec(n1: Int, n2: Int): Option[Int]
 }
 
-object Op {
-  // Binary ops
-  case object Sum    extends Op {
-    override def exec(n: Int, ns: Int*): Option[Int] = Some((n :: ns.toList).sum)
-  }
-  case object Diff   extends Op {
-    override def exec(n: Int, ns: Int*): Option[Int] = Some(n - ns.toList.sum)
-  }
-  case object Prod   extends Op {
-    override def exec(n: Int, ns: Int*): Option[Int] = Some((n :: ns.toList).product)
-  }
-  case object Div    extends Op {
-    override def exec(n: Int, ns: Int*): Option[Int] = ns.toList.product match {
-      case 0 => None
-      case p => Some(n / p)
-    }
-  }
-  case object Pow    extends Op {
-    override def exec(n: Int, ns: Int*): Option[Int] = Some(math.pow(n, ns.toList.sum).round.toInt)
-  }
-  // Unary ops
-  case object Square extends Op {
-    override def exec(n: Int, ns: Int*): Option[Int] = Some(math.sqrt(n).round.toInt)
-  }
-  case object Abs    extends Op {
-    override def exec(n: Int, ns: Int*): Option[Int] = Some(math.abs(n))
-  }
-  case object Neg    extends Op {
-    override def exec(n: Int, ns: Int*): Option[Int] = Some(-1 * n)
-  }
-  case object Lg     extends Op {
-    override def exec(n: Int, ns: Int*): Option[Int] = Some(math.log(n).round.toInt)
-  }
-  case object Ln     extends Op {
-    override def exec(n: Int, ns: Int*): Option[Int] = Some(math.log10(n).round.toInt)
+object OpType {
+
+  case object Sum extends OpType {
+    override def exec(n1: Int, n2: Int): Option[Int] = Some(n1 + n2)
   }
 
-  def make(s: String): Option[Op] = s match {
+  case object Diff extends OpType {
+    override def exec(n1: Int, n2: Int): Option[Int] = Some(n1 - n2)
+  }
+
+  case object Prod extends OpType {
+    override def exec(n1: Int, n2: Int): Option[Int] = Some(n1 * n2)
+  }
+
+  case object Div extends OpType {
+    override def exec(n1: Int, n2: Int): Option[Int] = if (n2 == 0) None else Some(n1 / n2)
+  }
+
+  case object Pow extends OpType {
+    override def exec(n1: Int, n2: Int): Option[Int] = Some(math.pow(n1, n2).toInt)
+  }
+
+  def make(s: String): Option[OpType] = s match {
     case "plus"                => Some(Sum)
     case "minus"               => Some(Diff)
     case "multiplied by"       => Some(Prod)
@@ -55,15 +40,13 @@ object Op {
 
 sealed trait Expr
 object Expr {
-  final case object Q                                        extends Expr
-  final case class Lit(n: Int)                               extends Expr
-  final case class UnaryOp(op: Op, n: Expr)                  extends Expr
-  final case class BinaryOp(left: Expr, op: Op, right: Expr) extends Expr
+
+  final case class Lit(n: Int)                             extends Expr
+  final case class Op(op: OpType, left: Expr, right: Expr) extends Expr
 
   def eval(expr: Expr): Option[Int] = expr match {
-    case Lit(n)                    => Some(n)
-    case UnaryOp(op, ex)           => eval(ex).flatMap(n => op.exec(n))
-    case BinaryOp(left, op, right) =>
+    case Lit(n)              => Some(n)
+    case Op(op, left, right) =>
       for {
         l   <- eval(left)
         r   <- eval(right)
@@ -89,13 +72,13 @@ object ExprLexer extends RegexParsers {
   val arithmetic: ExprLexer.Parser[Option[Expr]] =
     whatIs ~ number ~ rep((plus | minus | multipliedBy | dividedBy) ~ number) ^^ { case _ ~ n1 ~ ops =>
       ops.foldLeft(Option.apply[Expr](Lit(n1))) { case (Some(expr), op ~ n) =>
-        Op.make(op).map(BinaryOp(expr, _, Lit(n)))
+        OpType.make(op).map(Op(_, expr, Lit(n)))
       }
     }
 
   val power: ExprLexer.Parser[Option[Expr]] =
     whatIs ~ number ~ raisedTo ~ number ~ nthPower ^^ { case _ ~ n1 ~ r ~ n2 ~ p =>
-      Op.make(r + " nth " + p).map(BinaryOp(Lit(n1), _, Lit(n2)))
+      OpType.make(r + " nth " + p).map(Op(_, Lit(n1), Lit(n2)))
     }
 
   val all: ExprLexer.Parser[Option[Expr]] = arithmetic | power | justNum
