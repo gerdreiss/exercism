@@ -64,6 +64,10 @@ class WordyTest extends FunSuite with Matchers {
     Wordy.answer("What is 5 raised to the 3rd power?") should be(Some(125))
   }
 
+  test("multiple powers") {
+    Wordy.answer("What is 2 raised to the 3rd power raised to the 2nd power?") should be(Some(64))
+  }
+
   test("unknown operation") {
     Wordy.answer("What is 52 cubed?") should be(None)
   }
