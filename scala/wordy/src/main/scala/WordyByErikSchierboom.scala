@@ -1,6 +1,7 @@
 // shamelessly stolen from https://exercism.org/tracks/scala/exercises/wordy/solutions/ErikSchierboom
 
 import scala.util.parsing.combinator._
+
 sealed trait Expression {
   def solve: Int
 }
@@ -23,9 +24,12 @@ case class Power(e1: Expression, e2: Expression)    extends Expression   {
   def solve: Int = Math.pow(e1.solve, e2.solve).toInt
 }
 object WordProblem                                  extends RegexParsers {
+
   def operand: Parser[Operand]       = """(0|-?[1-9]\d*)""".r ^^ { str => Operand(str.toInt) }
   def operator: Parser[String]       = "plus" | "minus" | "multiplied by" | "divided by" | "raised to the"
-  def operation: Parser[Expression]  =
+  def expression: Parser[Expression] = operand | operation
+
+  def operation: Parser[Expression] =
     expression ~ (operator ~ expression).* ^^ { case expr ~ list =>
       list.foldLeft(expr) {
         case (left, "plus" ~ right)          => Sum(left, right)
@@ -35,8 +39,10 @@ object WordProblem                                  extends RegexParsers {
         case (left, "raised to the" ~ right) => Power(left, right)
       }
     }
-  def expression: Parser[Expression] = operand | operation // this last part below had to be fixed to make it work
-  def equation: Parser[Expression]   = "What is " ~> operation <~ """((st|nd|rd|th) power)?\?""".r // fixed from "?"
+
+  def equation: Parser[Expression] = // this last part below had to be fixed to make it work
+    "What is " ~> operation <~ """((st|nd|rd|th) power)?\?""".r // fixed from "?"
+
   def apply(input: String): Option[Int] = {
     parse(equation, input) match {
       case Success(expression, _) => Some(expression.solve)
