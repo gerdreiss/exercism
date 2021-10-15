@@ -1,3 +1,4 @@
 .exercism/
+.idea/
 target/
 *.lock
