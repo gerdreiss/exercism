@@ -39,7 +39,10 @@ impl Clock {
             }
         }
     }
+    pub fn from_minutes(minutes: i32) -> Self {
+        Clock::new(minutes / 60, minutes % 60)
+    }
     pub fn add_minutes(&self, minutes: i32) -> Self {
-        *self + Clock::new(minutes / 60, minutes % 60)
+        *self + Clock::from_minutes(minutes)
     }
 }
