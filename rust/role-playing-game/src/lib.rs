@@ -6,7 +6,9 @@ pub struct Player {
 
 impl Player {
     pub fn revive(&self) -> Option<Player> {
-        if self.health > 0 { None } else {
+        if self.health > 0 {
+            None
+        } else {
             Some(Player {
                 health: 100,
                 mana: if self.level >= 10 { Some(100) } else { None },
@@ -16,14 +18,26 @@ impl Player {
     }
 
     pub fn cast_spell(&mut self, mana_cost: u32) -> u32 {
-        if self.mana.is_none() {
+        if let Some(mana) = self.mana {
+            if mana < mana_cost {
+                0
+            } else {
+                self.mana = self.mana.map(|m| m - mana_cost);
+                mana_cost * 2
+            }
+        } else {
             self.health = self.health.checked_sub(mana_cost).unwrap_or_default();
             0
-        } else if self.mana.unwrap() < mana_cost {
-            0
-        } else {
-            self.mana = self.mana.map(|m| m - mana_cost);
-            mana_cost * 2
         }
+
+        // if self.mana.is_none() {
+        //     self.health = self.health.checked_sub(mana_cost).unwrap_or_default();
+        //     0
+        // } else if self.mana.unwrap() < mana_cost {
+        //     0
+        // } else {
+        //     self.mana = self.mana.map(|m| m - mana_cost);
+        //     mana_cost * 2
+        // }
     }
 }
