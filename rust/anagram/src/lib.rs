@@ -25,7 +25,7 @@ fn grouped(s: String) -> HashMap<char, usize> {
 // pub fn anagrams_for<'a>(target: &str, inputs: & [&'a str]) -> HashSet<&'a str> {
 //     fn sort_string(s: &str) -> Vec<char> {
 //         let mut target_chars: Vec<char> = s.to_lowercase().chars().collect();
-//         target_chars.sort();
+//         target_chars.sort(); // why the hell does the function .sorted() (like .cloned()) not exist?!
 //         return target_chars;
 //     }
 //     let target_sorted = sort_string(&target);
