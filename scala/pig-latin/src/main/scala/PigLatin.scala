@@ -8,8 +8,7 @@ object PigLatin {
   val BeginsWithConsonantSoundFollowedByY: Regex  = "([^aeiouy]+)(y.*)".r
 
   def translate(phrase: String): String =
-    phrase
-      .split("\\s")
+    phrase.words
       .map {
         case BeginsWithVowelSound(prefix, rest)                 => prefix + rest + "ay"
         case BeginsWithConsonantSoundFollowedByQu(prefix, rest) => rest + prefix + "ay"
@@ -18,5 +17,9 @@ object PigLatin {
         case word                                               => word
       }
       .mkString(" ")
+
+  implicit class StringOps(s: String) {
+    def words: Array[String] = s.split("\\s")
+  }
 
 }
