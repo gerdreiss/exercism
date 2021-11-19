@@ -2,23 +2,20 @@ import scala.util.matching.Regex
 
 object PigLatin {
 
-  val beginsWithVowelSound: Regex                 = "(xr|yt|[aeiou]+).*".r
-  val beginsWithConsonantSound: Regex             = "([^aeiou]+).*".r
-  val beginsWithConsonantSoundFollowedByQU: Regex = "([^aeiouq]*qu).*".r
-  val beginsWithConsonantSoundFollowedByY: Regex  = "([^aeiouy]+)y.*".r
-
-  def movePrefix(word: String, prefix: String): String =
-    word.drop(prefix.length) + prefix + "ay"
+  val BeginsWithVowelSound: Regex                 = "(xr|yt|[aeiou]+)(.*)".r
+  val BeginsWithConsonantSound: Regex             = "([^aeiou]+)(.*)".r
+  val BeginsWithConsonantSoundFollowedByQu: Regex = "([^aeiouq]*qu)(.*)".r
+  val BeginsWithConsonantSoundFollowedByY: Regex  = "([^aeiouy]+)(y.*)".r
 
   def translate(phrase: String): String =
     phrase
       .split("\\s")
       .map {
-        case word @ beginsWithVowelSound(_)                      => word + "ay"
-        case word @ beginsWithConsonantSoundFollowedByQU(prefix) => movePrefix(word, prefix)
-        case word @ beginsWithConsonantSoundFollowedByY(prefix)  => movePrefix(word, prefix)
-        case word @ beginsWithConsonantSound(prefix)             => movePrefix(word, prefix)
-        case word                                                => word
+        case BeginsWithVowelSound(prefix, rest)                 => prefix + rest + "ay"
+        case BeginsWithConsonantSoundFollowedByQu(prefix, rest) => rest + prefix + "ay"
+        case BeginsWithConsonantSoundFollowedByY(prefix, rest)  => rest + prefix + "ay"
+        case BeginsWithConsonantSound(prefix, rest)             => rest + prefix + "ay"
+        case word                                               => word
       }
       .mkString(" ")
 
