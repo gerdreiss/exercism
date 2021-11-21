@@ -1,8 +1,25 @@
-## sbt project compiled with Scala 3
+# Acronym
 
-### Usage
+Convert a phrase to its acronym.
 
-This is a normal sbt project. You can compile code with `sbt compile`, run it with `sbt run`, and `sbt console` will start a Scala 3 REPL.
+Techies love their TLA (Three Letter Acronyms)!
 
-For more information on the sbt-dotty plugin, see the
-[scala3-example-project](https://github.com/scala/scala3-example-project/blob/main/README.md).
+Help generate some jargon by writing a program that converts a long name
+like Portable Network Graphics to its acronym (PNG).
+
+The Scala exercises assume an SBT project scheme. The exercise solution source
+should be placed within the exercise directory/src/main/scala. The exercise
+unit tests can be found within the exercise directory/src/test/scala.
+
+To run the tests simply run the command `sbt test` in the exercise directory.
+
+Please see the [learning](https://exercism.io/tracks/scala/learning) and 
+[installation](https://exercism.io/tracks/scala/installation) pages if you need any help.
+
+
+## Source
+
+Julien Vanier [https://github.com/monkbroc](https://github.com/monkbroc)
+
+## Submitting Incomplete Solutions
+It's possible to submit an incomplete solution so you can see how others have completed the exercise.
