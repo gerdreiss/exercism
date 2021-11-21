@@ -1,4 +1,3 @@
-import scala.annotation.tailrec
 object AllYourBase:
   def getInputValue(inputBase: Int, input: List[Int]): Option[Int] = Some(
     input
