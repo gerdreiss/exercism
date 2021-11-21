@@ -1,8 +1,9 @@
+import scala.annotation.tailrec
 object AllYourBase:
   def getInputValue(inputBase: Int, input: List[Int]): Option[Int] = Some(
     input
       .zip(input.indices.reverse)
-      .map { case (n, idx) =>
+      .map { (n, idx) =>
         n * math.pow(inputBase, idx).toInt
       }
       .sum
