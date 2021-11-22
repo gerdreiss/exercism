@@ -18,7 +18,7 @@ object House {
     (x to y).map(withClauses).mkString + "\n"
 
   def withClauses(x: Int): String =
-    "This is " + insertClauses(x - 1) + "the house that Jack built.\n"
+    s"This is ${insertClauses(x - 1)}the house that Jack built.\n"
 
   def insertClauses(x: Int): String =
     if (x <= 0) ""
