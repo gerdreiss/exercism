@@ -1,8 +1,28 @@
-## sbt project compiled with Scala 3
+# Clock
 
-### Usage
+Welcome to Clock on Exercism's Scala Track.
+If you need help running the tests or submitting your code, check out `HELP.md`.
 
-This is a normal sbt project. You can compile code with `sbt compile`, run it with `sbt run`, and `sbt console` will start a Scala 3 REPL.
+## Instructions
 
-For more information on the sbt-dotty plugin, see the
-[scala3-example-project](https://github.com/scala/scala3-example-project/blob/main/README.md).
+Implement a clock that handles times without dates.
+
+You should be able to add and subtract minutes to it.
+
+Two clocks that represent the same time should be equal to each other.
+
+## Source
+
+### Created by
+
+- @ricemery
+
+### Contributed to by
+
+- @ErikSchierboom
+- @ppartarr
+- @rajeshpg
+
+### Based on
+
+Pairing session with Erin Drummond - https://twitter.com/ebdrummond
