@@ -50,7 +50,7 @@ object Garden:
       .grouped(4)
       .toList
 
-extension (lines: String)
-  def zipLines: List[(Char, Char)] =
-    val split = lines.split('\n')
-    split(0).zip(split(1)).toList
+  extension (lines: String)
+    def zipLines: List[(Char, Char)] =
+      val split = lines.split('\n')
+      split(0).zip(split(1)).toList
