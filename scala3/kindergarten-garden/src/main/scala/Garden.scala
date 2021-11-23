@@ -1,8 +1,5 @@
-enum Plant(ch: Char):
-  case Clover extends Plant('C')
-  case Grass extends Plant('G')
-  case Radishes extends Plant('R')
-  case Violets extends Plant('V')
+enum Plant:
+  case Clover, Grass, Radishes, Violets
 
 object Plant:
   def fromChar(ch: Char): Option[Plant] =
@@ -45,7 +42,7 @@ object Garden:
       .foldLeft(List.empty[Plant]) {
         case (acc, (p00, p10) :: (p01, p11) :: _) =>
           acc ++ List(p00, p01, p10, p11).flatMap(Plant.fromChar)
-        case (acc, _) => acc
+        case (acc, _)                             => acc
       }
       .grouped(4)
       .toList
